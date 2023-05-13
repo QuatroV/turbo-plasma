@@ -2,7 +2,7 @@
   "name": "create-t3-turbo",
   "private": true,
   "engines": {
-    "node": ">=v18.16.0"
+    "node": ">=v16.0.0"
   },
   "scripts": {
     "build": "turbo build",
@@ -17,7 +17,7 @@
     "type-check": "turbo type-check"
   },
   "dependencies": {
-    "@acme/eslint-config": "^0.1.0",
+    "@plasma/eslint-config": "^0.1.0",
     "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
     "@manypkg/cli": "^0.20.0",
     "@types/prettier": "^2.7.2",
@@ -29,8 +29,8 @@
   },
   "packageManager": "yarn@1.22.18",
   "workspaces": [
-    "apps/expo",
-    "apps/nextjs",
+    "apps/lms",
+    "apps/ide",
     "packages/api",
     "packages/auth",
     "packages/db",

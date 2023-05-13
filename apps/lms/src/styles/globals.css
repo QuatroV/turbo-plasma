@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-mesh-gradient {
+    background-color: #99fffd;
+    background-image: radial-gradient(
+        at 2% 97%,
+        hsla(195, 78%, 65%, 1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 97% 94%, hsla(270, 80%, 63%, 1) 0px, transparent 50%),
+      radial-gradient(
+        at 91% 14%,
+        hsla(259, 75%, 75%, 0.63) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 8% 7%, hsla(275, 63%, 49%, 0.76) 0px, transparent 50%),
+      radial-gradient(at 68% 13%, hsla(8, 96%, 48%, 0.57) 0px, transparent 50%);
+  }
+
+  .bg-mesh-sunrise {
+    background-color: hsla(326, 100%, 80%, 1);
+    background-image: radial-gradient(
+        at 91% 5%,
+        hsla(242, 88%, 68%, 1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 56% 78%, hsla(30, 90%, 61%, 1) 0px, transparent 50%),
+      radial-gradient(at 4% 69%, hsla(295, 86%, 61%, 1) 0px, transparent 50%),
+      radial-gradient(at 63% 99%, hsla(273, 77%, 67%, 1) 0px, transparent 50%),
+      radial-gradient(at 12% 70%, hsla(301, 91%, 74%, 1) 0px, transparent 50%);
+  }
+
+  .bg-mesh-midnight {
+    background-color: hsla(234, 83%, 70%, 1);
+    background-image: radial-gradient(
+        at 0% 0%,
+        hsla(237, 39%, 27%, 1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 13% 74%, hsla(250, 92%, 66%, 1) 0px, transparent 50%),
+      radial-gradient(at 94% 3%, hsla(240, 40%, 35%, 1) 0px, transparent 50%),
+      radial-gradient(at 18% 3%, hsla(240, 86%, 77%, 1) 0px, transparent 50%),
+      radial-gradient(at 41% 91%, hsla(216, 78%, 72%, 1) 0px, transparent 50%);
+  }
+
+  .bg-mesh-forest {
+    background-color: hsla(105, 54%, 58%, 1);
+    background-image: radial-gradient(
+        at 84% 70%,
+        hsla(137, 49%, 45%, 1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 74% 100%, hsla(122, 58%, 27%, 1) 0px, transparent 50%),
+      radial-gradient(at 53% 16%, hsla(160, 97%, 77%, 1) 0px, transparent 50%),
+      radial-gradient(at 75% 5%, hsla(121, 54%, 44%, 1) 0px, transparent 50%),
+      radial-gradient(at 33% 39%, hsla(138, 52%, 80%, 1) 0px, transparent 50%),
+      radial-gradient(at 99% 39%, hsla(128, 60%, 75%, 1) 0px, transparent 50%);
+  }
+
+  .bg-glass {
+    background: rgba(243, 243, 243, 0.571);
+    box-shadow: 0 8px 32px 0 rgba(122, 122, 122, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+}
+
+@layer base {
+  @font-face {
+    font-family: "Rubik";
+    src: url("../../public/fonts/Mulish-VariableFont_wght.ttf")
+      format("truetype");
+  }
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    position: absolute;
+    width: 10px;
+    height: 20px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #9b9b9b80;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:active {
+    background: #808080;
+    width: 20px;
+  }
+}
