@@ -1,0 +1,3 @@
+[submodule ".\\apps\\ide\\"]
+	path = .\\apps\\ide\\
+	url = https://github.com/QuatroV/plasma-electron
