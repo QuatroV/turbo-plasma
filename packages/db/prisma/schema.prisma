@@ -84,6 +84,7 @@ model Lesson {
     content  String?
     Course   Course? @relation(fields: [courseId], references: [id])
     courseId String?
+    meta     Json?
 }
 
 model Task {

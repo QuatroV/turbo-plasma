@@ -13,6 +13,7 @@ export const lessonRouter = createTRPCRouter({
           id: true,
           name: true,
           content: true,
+          meta: true,
           tasks: {
             select: {
               name: true,
@@ -36,6 +37,7 @@ export const lessonRouter = createTRPCRouter({
               id: true,
               name: true,
               content: true,
+              meta: true,
               tasks: {
                 select: {
                   name: true,
@@ -125,5 +127,24 @@ export const lessonRouter = createTRPCRouter({
       });
 
       return updatedCourse;
+    }),
+
+  updateMeta: protectedProcedure
+    .input(z.object({ lessonId: z.string(), meta: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const jsonMeta = JSON.parse(input.meta);
+      const updatedLesson = await ctx.prisma.lesson.update({
+        data: {
+          meta: jsonMeta,
+        },
+        where: {
+          id: input.lessonId,
+        },
+        include: {
+          tasks: true,
+        },
+      });
+
+      return updatedLesson;
     }),
 });

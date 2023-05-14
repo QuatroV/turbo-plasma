@@ -1,12 +1,13 @@
+import { type Prisma } from "@prisma/client";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { Prisma } from "@prisma/client";
 
 export type LessonInfo = Prisma.LessonGetPayload<{
   select: {
     id: true;
     name: true;
     content: true;
+    meta: true;
     tasks: {
       select: {
         name: true;
@@ -26,7 +27,7 @@ const useLessonStore = create<lessonState>()(
   devtools((set) => ({
     lesson: undefined,
     setLesson: (lesson) => set({ lesson: lesson }),
-  }))
+  })),
 );
 
 export default useLessonStore;

@@ -1,9 +1,10 @@
-import { signIn, useSession } from "next-auth/react";
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
+import { signIn } from "next-auth/react";
+
+import clsxm from "~/utils/clsxm";
 import Button from "~/components/Button";
 import Input from "~/components/Input";
-import clsxm from "~/utils/clsxm";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -63,7 +64,7 @@ const LoginForm = () => {
       <div
         className={clsxm(
           "absolute -bottom-16 w-full rounded border border-red-500 bg-red-100 p-2",
-          error ? "visible" : "invisible"
+          error ? "visible" : "invisible",
         )}
       >
         {error}

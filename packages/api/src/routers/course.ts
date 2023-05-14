@@ -217,4 +217,36 @@ export const courseRouter = createTRPCRouter({
 
       return updatedCourse;
     }),
+
+  myCourses: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+
+    if (!userId) {
+      throw new Error("No user id obtained from the context");
+    }
+
+    const myCourses = ctx.prisma.course.findMany({
+      where: {
+        CourseUser: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    });
+
+    return myCourses;
+  }),
+
+  getAllLessons: protectedProcedure
+    .input(z.object({ courseId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const lessons = await ctx.prisma.lesson.findMany({
+        where: {
+          courseId: input.courseId,
+        },
+      });
+
+      return lessons;
+    }),
 });

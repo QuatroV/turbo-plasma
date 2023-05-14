@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { type Prisma } from "@prisma/client";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -13,6 +13,7 @@ export type CourseInfo = Prisma.CourseGetPayload<{
         id: true;
         name: true;
         content: true;
+        meta: true;
         tasks: {
           select: {
             name: true;
@@ -111,7 +112,7 @@ const useCourseStore = create<courseState>()(
 
     addLessonModalOpen: false,
     setAddLessonModalOpen: (addLessonModalOpen) => set({ addLessonModalOpen }),
-  }))
+  })),
 );
 
 export default useCourseStore;

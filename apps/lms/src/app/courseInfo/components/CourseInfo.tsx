@@ -1,11 +1,12 @@
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+
+import { api } from "~/utils/api";
 import useCourseStore from "~/stores/courseStore";
 import CourseInfoHeader from "./CourseInfoHeader";
-import CourseInfoShortInfo from "./CourseInfoShortInfo";
 import CourseInfoLessons from "./CourseInfoLessons";
 import CourseInfoPeople from "./CourseInfoPeople";
-import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import CourseInfoShortInfo from "./CourseInfoShortInfo";
 
 const CourseInfo = (): JSX.Element | null => {
   const currentCourse = useCourseStore((state) => state.currentCourse);
@@ -13,11 +14,12 @@ const CourseInfo = (): JSX.Element | null => {
   const setJoined = useCourseStore((state) => state.setJoined);
   const setIsOwner = useCourseStore((state) => state.setIsOwner);
   const editedCurrentCourse = useCourseStore(
-    (state) => state.editedCurrentCourse
+    (state) => state.editedCurrentCourse,
   );
   const setEditedCurrentCourse = useCourseStore(
-    (state) => state.setEditedCurrentCourse
+    (state) => state.setEditedCurrentCourse,
   );
+  const isEditMode = useCourseStore((state) => state.editMode);
   const setUsers = useCourseStore((state) => state.setUsers);
   const setOwner = useCourseStore((state) => state.setCurrentCourseOwner);
 
@@ -25,7 +27,7 @@ const CourseInfo = (): JSX.Element | null => {
 
   const courseQuery = api.course.shortInfo.useQuery(
     { userId: session?.user?.id || "", courseId: currentCourse?.id || "" },
-    { enabled: !!currentCourse }
+    { enabled: !!currentCourse },
   );
 
   useEffect(() => {
@@ -47,10 +49,10 @@ const CourseInfo = (): JSX.Element | null => {
         CourseUsers.map((courseUser) => ({
           user: courseUser.user,
           courseRole: courseUser.courseRole,
-        }))
+        })),
       );
       setOwner(
-        CourseUsers.find((courseUser) => courseUser.courseRole === "OWNER")
+        CourseUsers.find((courseUser) => courseUser.courseRole === "OWNER"),
       );
     }
   }, [courseQuery.data]);
@@ -60,7 +62,7 @@ const CourseInfo = (): JSX.Element | null => {
   }
 
   return (
-    <main className="flex h-full flex-1 flex-col gap-2 p-2 font-rubik">
+    <main className="font-rubik flex h-full flex-1 flex-col gap-2 p-2">
       <CourseInfoHeader item={currentCourse} />
       <CourseInfoShortInfo shortInfo={currentCourse.shortInfo} />
       <div className="flex flex-initial gap-2">
