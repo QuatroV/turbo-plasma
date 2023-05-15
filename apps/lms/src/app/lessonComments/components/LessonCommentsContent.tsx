@@ -11,11 +11,11 @@ const LessonCommentsContent = ({ isOpen }: Props) => {
     <div
       className={clsxm(
         "flex flex-col gap-2 rounded-lg bg-white p-4 transition-all",
-        isOpen ? "visible" : "hidden "
+        isOpen ? "visible" : "hidden ",
       )}
     >
       <LessonCommentInputForm />
-      <LessonCommentsItems />
+      <LessonCommentsItems commentsOpened={isOpen} />
     </div>
   );
 };

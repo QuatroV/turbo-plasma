@@ -18,15 +18,30 @@ export type LessonInfo = Prisma.LessonGetPayload<{
   };
 }>;
 
+export type CommentInfo = Prisma.CommentGetPayload<{
+  select: {
+    content: true;
+    id: true;
+    author: true;
+    createdAt: true;
+  };
+}>;
+
 interface lessonState {
   lesson?: LessonInfo;
   setLesson(course: LessonInfo): void;
+
+  comments: CommentInfo[];
+  setComments(comments: CommentInfo[]): void;
 }
 
 const useLessonStore = create<lessonState>()(
   devtools((set) => ({
     lesson: undefined,
     setLesson: (lesson) => set({ lesson: lesson }),
+
+    comments: [],
+    setComments: (comments) => set({ comments }),
   })),
 );
 

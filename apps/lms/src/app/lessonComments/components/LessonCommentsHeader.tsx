@@ -1,5 +1,7 @@
 import { IoIosArrowUp } from "react-icons/io";
+
 import clsxm from "~/utils/clsxm";
+import useLessonStore from "~/stores/lessonStore";
 
 type Props = {
   isOpen: boolean;
@@ -7,6 +9,8 @@ type Props = {
 };
 
 const LessonCommentsHeader = ({ isOpen, setOpen }: Props) => {
+  const comments = useLessonStore((state) => state.comments);
+
   return (
     <div className="bg-glass flex flex-1 items-center gap-2 rounded-xl p-2">
       <div
@@ -19,7 +23,7 @@ const LessonCommentsHeader = ({ isOpen, setOpen }: Props) => {
         />
       </div>
       <h3 className="text-lg font-bold">Comments</h3>
-      <p className="text-sm text-gray-500">21</p>
+      <p className="text-sm text-gray-500">{comments.length}</p>
     </div>
   );
 };

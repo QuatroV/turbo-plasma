@@ -1,3 +1,4 @@
+import { commentRouter } from "./routers/comment";
 import { courseRouter } from "./routers/course";
 import { lessonRouter } from "./routers/lesson";
 import { taskRouter } from "./routers/task";
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   course: courseRouter,
   lesson: lessonRouter,
   task: taskRouter,
+  comment: commentRouter,
 });
 
 // export type definition of API
