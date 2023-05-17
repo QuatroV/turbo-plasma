@@ -1,12 +1,13 @@
-import { GetServerSidePropsContext, type NextPage } from "next";
 import { useEffect } from "react";
+import { type GetServerSidePropsContext, type NextPage } from "next";
+
+import { api } from "~/utils/api";
 import LessonComments from "~/app/lessonComments/components/LessonComments";
 import LessonInfo from "~/app/lessonInfo/components/LessonInfo";
 import LessonTasks from "~/app/lessonTasks/components/LessonTasks";
 import useCourseStore from "~/stores/courseStore";
 import useLessonStore from "~/stores/lessonStore";
 import usePagesStore from "~/stores/pageStore";
-import { api } from "~/utils/api";
 
 type Props = {
   lessonId: string;
@@ -31,7 +32,7 @@ const Lesson: NextPage<Props> = ({ lessonId }) => {
           course.CourseUser.map((courseUser) => ({
             user: courseUser.user,
             courseRole: courseUser.courseRole,
-          }))
+          })),
         );
         setCurrentCourse(course);
       }
@@ -41,7 +42,7 @@ const Lesson: NextPage<Props> = ({ lessonId }) => {
   }, [lessonQuery.data]);
 
   return (
-    <main className=" scrollbar flex flex-auto flex-col gap-2 overflow-auto p-2 font-rubik">
+    <main className=" scrollbar font-rubik flex flex-auto flex-col gap-2 overflow-y-auto overflow-x-hidden p-2 ">
       <LessonInfo />
       <LessonTasks />
       <LessonComments />

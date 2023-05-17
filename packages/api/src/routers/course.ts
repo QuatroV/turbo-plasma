@@ -41,6 +41,13 @@ export const courseRouter = createTRPCRouter({
           shortInfo: true,
           private: true,
           lessons: true,
+          topics: {
+            select: {
+              id: true,
+              name: true,
+              color: true,
+            },
+          },
           CourseUser: {
             select: {
               courseRole: true,
@@ -248,5 +255,61 @@ export const courseRouter = createTRPCRouter({
       });
 
       return lessons;
+    }),
+
+  createNewTopic: protectedProcedure
+    .input(
+      z.object({ courseId: z.string(), name: z.string(), color: z.string() }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const topic = await ctx.prisma.topic.create({
+        data: {
+          courseId: input.courseId,
+          name: input.name,
+          color: input.color,
+        },
+      });
+
+      return topic;
+    }),
+
+  changeTopic: protectedProcedure
+    .input(
+      z.object({
+        courseId: z.string(),
+        topicId: z.string(),
+        lessonIds: z.array(z.string()),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.lesson.updateMany({
+        where: {
+          id: { in: input.lessonIds },
+        },
+        data: {
+          topicId: input.topicId,
+        },
+      });
+
+      const updatedCourse = await ctx.prisma.course.findFirst({
+        where: {
+          id: input.courseId,
+        },
+        include: {
+          lessons: true,
+        },
+      });
+
+      return updatedCourse;
+    }),
+
+  deleteTopic: protectedProcedure
+    .input(z.object({ topicId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.topic.delete({
+        where: {
+          id: input.topicId,
+        },
+      });
     }),
 });

@@ -76,6 +76,7 @@ model Course {
   private    Boolean?     @default(false)
   lessons    Lesson[]
   CourseUser CourseUser[]
+  topics      Topic[]
 }
 
 model Lesson {
@@ -87,6 +88,9 @@ model Lesson {
   courseId String?
   meta     Json?
   Comment  Comment[]
+
+  Topic   Topic? @relation(fields: [topicId], references: [id])
+  topicId String?
 }
 
 model Task {
@@ -142,6 +146,15 @@ model Comment {
   lesson    Lesson   @relation(fields: [lessonId], references: [id])
   lessonId  String
   createdAt DateTime @default(now())
+}
+
+model Topic {
+  id       String   @id @unique @default(cuid())
+  name     String
+  course   Course   @relation(fields: [courseId], references: [id])
+  courseId String
+  Lesson   Lesson[]
+  color    String
 }
 
 enum Role {

@@ -97,3 +97,24 @@
     width: 20px;
   }
 }
+
+@layer utilities {
+  .scrollbar-invisible::-webkit-scrollbar {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+  }
+
+  .scrollbar-invisible::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-invisible::-webkit-scrollbar-thumb {
+    background: #9b9b9b80;
+  }
+
+  .scrollbar-invisible::-webkit-scrollbar-thumb:active {
+    background: #808080;
+    width: 20px;
+  }
+}

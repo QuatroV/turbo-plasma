@@ -14,6 +14,7 @@ export const lessonRouter = createTRPCRouter({
           name: true,
           content: true,
           meta: true,
+          topicId: true,
           tasks: {
             select: {
               name: true,
@@ -32,6 +33,13 @@ export const lessonRouter = createTRPCRouter({
           name: true,
           shortInfo: true,
           private: true,
+          topics: {
+            select: {
+              id: true,
+              name: true,
+              color: true,
+            },
+          },
           lessons: {
             select: {
               id: true,
@@ -101,6 +109,7 @@ export const lessonRouter = createTRPCRouter({
           },
         },
         include: {
+          topics: true,
           lessons: true,
         },
       });
@@ -109,11 +118,11 @@ export const lessonRouter = createTRPCRouter({
     }),
 
   delete: protectedProcedure
-    .input(z.object({ courseId: z.string(), lessonId: z.string() }))
+    .input(z.object({ courseId: z.string(), lessonIds: z.array(z.string()) }))
     .mutation(async ({ input, ctx }) => {
-      await ctx.prisma.lesson.delete({
+      await ctx.prisma.lesson.deleteMany({
         where: {
-          id: input.lessonId,
+          id: { in: input.lessonIds },
         },
       });
 

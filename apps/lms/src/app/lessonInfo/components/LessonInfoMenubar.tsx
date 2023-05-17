@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { AiOutlineRead } from "react-icons/ai";
 import { GrEdit } from "react-icons/gr";
+
 import Toggle from "~/components/Toggle";
 
 const LessonMenubarToggleOptions = {

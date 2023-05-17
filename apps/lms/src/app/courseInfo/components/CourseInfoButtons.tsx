@@ -1,7 +1,9 @@
 import { useSession } from "next-auth/react";
+
+import { api } from "~/utils/api";
 import Button from "~/components/Button";
 import useCourseStore from "~/stores/courseStore";
-import { api } from "~/utils/api";
+import useTopicStore from "~/stores/topicStore";
 
 type Props = {
   courseId: string;
@@ -17,7 +19,7 @@ const CourseInfoButtons = ({ isPrivate, courseId }: Props) => {
   const editMode = useCourseStore((state) => state.editMode);
   const setEditMode = useCourseStore((state) => state.setEditMode);
   const editedCurrentCourse = useCourseStore(
-    (state) => state.editedCurrentCourse
+    (state) => state.editedCurrentCourse,
   );
   const setCurrentCourse = useCourseStore((state) => state.setCurrentCourse);
 
@@ -49,16 +51,19 @@ const CourseInfoButtons = ({ isPrivate, courseId }: Props) => {
     }
   };
 
+  const setCurrentTopic = useTopicStore((state) => state.setCurrentTopic);
+
   const updateCourseMutation = api.course.update.useMutation();
 
   const handleEditMode = () => {
     setEditMode(true);
+    setCurrentTopic(undefined);
   };
 
   const handleSaveEditChanges = async () => {
     if (editedCurrentCourse) {
       const updatedCourse = await updateCourseMutation.mutateAsync(
-        editedCurrentCourse
+        editedCurrentCourse,
       );
 
       setCurrentCourse(updatedCourse);

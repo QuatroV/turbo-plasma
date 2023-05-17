@@ -1,11 +1,13 @@
-import { Prisma } from "@prisma/client";
-import Link from "next/link";
-import { MouseEventHandler } from "react";
+import { type MouseEventHandler } from "react";
+import { useRouter } from "next/router";
+import { type Prisma } from "@prisma/client";
+import { BsCheckCircleFill } from "react-icons/bs";
 import { FiEdit2 } from "react-icons/fi";
 import { HiOutlineTrash } from "react-icons/hi";
-import useCourseStore from "~/stores/courseStore";
+
 import { api } from "~/utils/api";
 import clsxm from "~/utils/clsxm";
+import useCourseStore from "~/stores/courseStore";
 
 type Props = {
   index: number;
@@ -18,9 +20,20 @@ type Props = {
       content: true;
     };
   }>;
+  onSelect: () => void;
+  selected: boolean;
+  onDeselect: () => void;
 };
 
-const CourseInfoLesson = ({ lesson, first, last, index }: Props) => {
+const CourseInfoLesson = ({
+  lesson,
+  first,
+  last,
+  index,
+  onSelect,
+  onDeselect,
+  selected,
+}: Props) => {
   const editMode = useCourseStore((state) => state.editMode);
   const courseId = useCourseStore((state) => state.currentCourse?.id);
   const setCurrentCourse = useCourseStore((state) => state.setCurrentCourse);
@@ -34,7 +47,7 @@ const CourseInfoLesson = ({ lesson, first, last, index }: Props) => {
   const handleDelete: MouseEventHandler<HTMLDivElement> = async (e) => {
     e.preventDefault();
     const updatedCourse = await deleteLessonMutation.mutateAsync({
-      lessonId: lesson.id,
+      lessonIds: [lesson.id],
       courseId: courseId || "",
     });
 
@@ -43,17 +56,32 @@ const CourseInfoLesson = ({ lesson, first, last, index }: Props) => {
     setCurrentCourse(updatedCourse);
   };
 
+  const router = useRouter();
+
   return (
-    <Link
-      href={`/lessons/${lesson.id}`}
+    <div
+      onClick={
+        !editMode ? () => router.push(`/lessons/${lesson.id}`) : undefined
+      }
       className={clsxm(
-        "flex cursor-pointer justify-between gap-2 bg-white p-2 active:bg-gray-100 active:shadow-inner",
+        "flex cursor-pointer justify-between gap-2 bg-white p-2 ",
+        !editMode && "active:bg-gray-100 active:shadow-inner",
         last && "rounded-b-lg",
         first && "rounded-t-lg",
-        !last && "border-b border-gray-300"
+        !last && "border-b border-gray-300",
       )}
     >
       <div className="flex items-center gap-1">
+        {editMode && selected && (
+          <BsCheckCircleFill
+            className="text-blue-500"
+            onClick={onDeselect}
+            size={24}
+          />
+        )}
+        {editMode && !selected && (
+          <div onClick={onSelect} className="h-6 w-6 rounded-full  border" />
+        )}
         <div>{index}</div>
         <div className="flex items-center text-sm">{lesson.name}</div>
       </div>
@@ -75,7 +103,7 @@ const CourseInfoLesson = ({ lesson, first, last, index }: Props) => {
           </div>
         </div>
       )}
-    </Link>
+    </div>
   );
 };
 

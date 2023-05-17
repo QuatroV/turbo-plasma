@@ -14,13 +14,7 @@ export type CourseInfo = Prisma.CourseGetPayload<{
         name: true;
         content: true;
         meta: true;
-        tasks: {
-          select: {
-            name: true;
-            content: true;
-            expectedResult: true;
-          };
-        };
+        topicId: true;
       };
     };
   };
@@ -66,6 +60,9 @@ interface courseState {
 
   addLessonModalOpen: boolean;
   setAddLessonModalOpen: (addLessonModalOpen: boolean) => void;
+
+  chosenLessonsIds: string[];
+  setChosenLessonsIds: (chosenLessonsIds: string[]) => void;
 }
 
 const useCourseStore = create<courseState>()(
@@ -112,6 +109,9 @@ const useCourseStore = create<courseState>()(
 
     addLessonModalOpen: false,
     setAddLessonModalOpen: (addLessonModalOpen) => set({ addLessonModalOpen }),
+
+    chosenLessonsIds: [],
+    setChosenLessonsIds: (chosenLessonsIds) => set({ chosenLessonsIds }),
   })),
 );
 

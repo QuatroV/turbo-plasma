@@ -1,11 +1,12 @@
 import { BsFillPeopleFill } from "react-icons/bs";
+
 import useCourseStore from "~/stores/courseStore";
 import CourseInfoStudent from "./CourseInfoStudent";
 
 const CourseInfoPeople = () => {
   const courseUsers = useCourseStore((state) => state.users);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-initial flex-col">
       <div className="flex items-center gap-2 rounded-t-xl bg-white p-2 font-bold shadow">
         <BsFillPeopleFill size={16} />
         People

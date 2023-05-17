@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
 import useCourseStore from "~/stores/courseStore";
+import useTopicStore from "~/stores/topicStore";
 import CourseInfoHeader from "./CourseInfoHeader";
 import CourseInfoLessons from "./CourseInfoLessons";
 import CourseInfoPeople from "./CourseInfoPeople";
@@ -19,7 +20,7 @@ const CourseInfo = (): JSX.Element | null => {
   const setEditedCurrentCourse = useCourseStore(
     (state) => state.setEditedCurrentCourse,
   );
-  const isEditMode = useCourseStore((state) => state.editMode);
+  const setTopics = useTopicStore((state) => state.setTopics);
   const setUsers = useCourseStore((state) => state.setUsers);
   const setOwner = useCourseStore((state) => state.setCurrentCourseOwner);
 
@@ -51,6 +52,7 @@ const CourseInfo = (): JSX.Element | null => {
           courseRole: courseUser.courseRole,
         })),
       );
+      setTopics(rest.topics);
       setOwner(
         CourseUsers.find((courseUser) => courseUser.courseRole === "OWNER"),
       );
@@ -62,7 +64,7 @@ const CourseInfo = (): JSX.Element | null => {
   }
 
   return (
-    <main className="font-rubik flex h-full flex-1 flex-col gap-2 p-2">
+    <main className="font-rubik scrollbar flex h-full min-w-0 flex-1 flex-col gap-2 overflow-y-auto p-2">
       <CourseInfoHeader item={currentCourse} />
       <CourseInfoShortInfo shortInfo={currentCourse.shortInfo} />
       <div className="flex flex-initial gap-2">
