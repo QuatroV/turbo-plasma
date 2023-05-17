@@ -26,6 +26,14 @@ const CourseInfo = (): JSX.Element | null => {
 
   const { data: session } = useSession();
 
+  useEffect(() => {
+    if (localStorage.getItem("lastOpenCourse")) {
+      setCurrentCourse(
+        JSON.parse(localStorage.getItem("lastOpenCourse") || ""),
+      );
+    }
+  }, []);
+
   const courseQuery = api.course.shortInfo.useQuery(
     { userId: session?.user?.id || "", courseId: currentCourse?.id || "" },
     { enabled: !!currentCourse },

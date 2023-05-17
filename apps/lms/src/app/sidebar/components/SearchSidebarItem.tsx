@@ -1,6 +1,6 @@
-import useCourseStore from "~/stores/courseStore";
-import { SearchCourseInfo } from "~/stores/searchStore";
 import clsxm from "~/utils/clsxm";
+import useCourseStore from "~/stores/courseStore";
+import { type SearchCourseInfo } from "~/stores/searchStore";
 
 type Props = {
   isFirst?: boolean;
@@ -24,7 +24,7 @@ const SearchSidebarItem = ({ isFirst, isLast, item }: Props) => {
   const currentCourseId = useCourseStore((state) => state.currentCourse?.id);
   const setCurrentCourse = useCourseStore((state) => state.setCurrentCourse);
   const setEditedCurrentCourse = useCourseStore(
-    (state) => state.setEditedCurrentCourse
+    (state) => state.setEditedCurrentCourse,
   );
   const setEditMode = useCourseStore((state) => state.setEditMode);
 
@@ -34,6 +34,7 @@ const SearchSidebarItem = ({ isFirst, isLast, item }: Props) => {
     if (isCurrentltySelected) {
       return;
     }
+    localStorage.setItem("lastOpenCourse", JSON.stringify(item));
     setEditMode(false);
     setCurrentCourse({ ...item, shortInfo: "", lessons: [] });
     setEditedCurrentCourse({ ...item, shortInfo: "", lessons: [] });
@@ -45,7 +46,7 @@ const SearchSidebarItem = ({ isFirst, isLast, item }: Props) => {
         " flex h-14 cursor-pointer items-center gap-2 border-2 border-b bg-gray-100 p-1 transition-all active:bg-gray-300 active:shadow-inner",
         isFirst && "rounded-t-xl",
         isLast && "rounded-b-xl",
-        isCurrentltySelected && "bg-gray-300"
+        isCurrentltySelected && "bg-gray-300",
       )}
       onClick={handleClick}
     >
