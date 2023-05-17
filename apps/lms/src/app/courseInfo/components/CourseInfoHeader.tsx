@@ -1,6 +1,8 @@
-import { ChangeEventHandler, useState } from "react";
+import { useState, type ChangeEventHandler } from "react";
+import { MdOutlinePlayLesson } from "react-icons/md";
+
 import Input from "~/components/Input";
-import useCourseStore, { CourseInfo } from "~/stores/courseStore";
+import useCourseStore, { type CourseInfo } from "~/stores/courseStore";
 import CourseInfoButtons from "./CourseInfoButtons";
 
 type Props = {
@@ -23,7 +25,9 @@ const CourseInfoHeader = ({ item }: Props) => {
 
   return (
     <div className="flex gap-2">
-      <div className="bg-glass h-14 w-14 flex-initial rounded-full p-2" />
+      <div className="flex h-14 w-14 flex-initial items-center justify-center rounded-full bg-white p-2">
+        <MdOutlinePlayLesson size={28} />
+      </div>
       <div className="bg-glass w-full flex-1 rounded-xl p-2">
         <div className="flex justify-between text-sm">
           <div className="flex flex-col gap-1">

@@ -1,9 +1,10 @@
 import {
-  ChangeEventHandler,
   MouseEventHandler,
   useEffect,
   useState,
+  type ChangeEventHandler,
 } from "react";
+
 import Input from "~/components/Input";
 import useCourseStore from "~/stores/courseStore";
 
@@ -32,7 +33,12 @@ const CourseInfoShortInfo = ({ shortInfo }: Props) => {
       </div>
       <div className="mx-2 mb-2 rounded-lg bg-white p-2 text-sm">
         {editMode ? (
-          <Input multiline value={inputContent} onChange={handleChange} />
+          <Input
+            multiline
+            className="min-h-[100px]"
+            value={inputContent}
+            onChange={handleChange}
+          />
         ) : (
           shortInfo
         )}
