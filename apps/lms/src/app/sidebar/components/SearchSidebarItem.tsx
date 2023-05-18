@@ -53,7 +53,7 @@ const SearchSidebarItem = ({ isFirst, isLast, item }: Props) => {
       onClick={handleClick}
     >
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200">
-        <MdOutlinePlayLesson size={28} className="text-gray-500" />
+        <MdOutlinePlayLesson size={22} className="text-gray-500" />
       </div>
       <div>
         <p className="flex items-center text-sm">
