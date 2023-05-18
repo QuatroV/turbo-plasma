@@ -1,20 +1,18 @@
-import { FiUser } from "react-icons/fi";
-import { GrHomeRounded } from "react-icons/gr";
-import AuthHeaderElement from "./AuthHeaderElement";
-import HeaderElement from "./HeaderElement";
 import Link from "next/link";
+
+import AuthHeaderElement from "./AuthHeaderElement";
+import Logo from "./Logo";
 
 const Header = () => {
   return (
     <div className="flex h-[40px] w-full items-center justify-between bg-gray-100 p-2 text-sm">
       <div className="flex gap-1">
-        <Link href="/">
-          <HeaderElement>
-            <GrHomeRounded size={18} />
-          </HeaderElement>
+        <Link href="/" className="flex items-center gap-2">
+          <Logo variant="gray" color="" width={32} height={32} />
+          <h1 className="font-rubik font-black text-gray-500">PLASMA</h1>
         </Link>
 
-        <HeaderElement>My courses</HeaderElement>
+        {/* <HeaderElement>My courses</HeaderElement> */}
       </div>
       <AuthHeaderElement />
     </div>
