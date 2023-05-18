@@ -11,7 +11,9 @@ const SearchSidebarMainPage = () => {
   const myCourses = useSearchStore((state) => state.myCourses);
 
   const [showMyCourses, setShowMyCourses] = useState(true);
-  const [showPopularCourses, setShowPopularCourses] = useState(false);
+  const [showPopularCourses, setShowPopularCourses] = useState(
+    myCourses.length === 0,
+  );
 
   return (
     <div className="scrollbar flex flex-1 flex-col gap-2 overflow-auto p-2 text-sm">
