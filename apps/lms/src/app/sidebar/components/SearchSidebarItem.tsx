@@ -1,3 +1,5 @@
+import { MdOutlinePlayLesson } from "react-icons/md";
+
 import clsxm from "~/utils/clsxm";
 import useCourseStore from "~/stores/courseStore";
 import { type SearchCourseInfo } from "~/stores/searchStore";
@@ -50,7 +52,9 @@ const SearchSidebarItem = ({ isFirst, isLast, item }: Props) => {
       )}
       onClick={handleClick}
     >
-      <div className="h-12 w-12 rounded-full bg-gray-200" />
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200">
+        <MdOutlinePlayLesson size={28} className="text-gray-500" />
+      </div>
       <div>
         <p className="flex items-center text-sm">
           <span>{name}</span>

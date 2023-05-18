@@ -163,10 +163,65 @@ export const courseRouter = createTRPCRouter({
     }),
 
   mainPage: publicProcedure.query(async ({ input, ctx }) => {
-    return ctx.prisma.course.findMany({
+    const popularCourses = await ctx.prisma.course.findMany({
+      select: {
+        id: true,
+        name: true,
+        private: true,
+        CourseUser: {
+          select: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+          where: {
+            courseRole: { equals: "OWNER" },
+          },
+        },
+      },
       where: { private: false },
+      orderBy: {
+        CourseUser: {
+          _count: "desc",
+        },
+      },
       take: 4,
     });
+
+    if (!ctx.session) {
+      return { popularCourses };
+    }
+
+    const userId = ctx.session.user.id;
+
+    if (!userId) {
+      throw new Error("No user id obtained from the context");
+    }
+
+    const myCourses = await ctx.prisma.course.findMany({
+      select: {
+        id: true,
+        name: true,
+        private: true,
+        CourseUser: {
+          select: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+          where: {
+            courseRole: { equals: "OWNER" },
+          },
+        },
+      },
+      where: { CourseUser: { some: { userId: userId } } },
+    });
+
+    return { popularCourses, myCourses };
   }),
 
   create: protectedProcedure.mutation(async ({ ctx }) => {

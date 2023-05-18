@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { type Prisma } from "@prisma/client";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -28,6 +28,9 @@ interface searchState {
 
   popularCourses: SearchCourseInfo[];
   setPopularCourses: (popularCourses: SearchCourseInfo[]) => void;
+
+  myCourses: SearchCourseInfo[];
+  setMyCourses: (myCourses: SearchCourseInfo[]) => void;
 }
 
 const useSearchStore = create<searchState>()(
@@ -46,7 +49,12 @@ const useSearchStore = create<searchState>()(
     setPopularCourses(popularCourses) {
       set({ popularCourses });
     },
-  }))
+
+    myCourses: [],
+    setMyCourses(myCourses) {
+      set({ myCourses });
+    },
+  })),
 );
 
 export default useSearchStore;

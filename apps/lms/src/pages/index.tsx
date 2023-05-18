@@ -1,9 +1,10 @@
-import { type NextPage } from "next";
 import { useEffect } from "react";
+import { type NextPage } from "next";
+
+import { api } from "~/utils/api";
 import CourseInfo from "~/app/courseInfo/components/CourseInfo";
 import usePagesStore from "~/stores/pageStore";
 import useSearchStore from "~/stores/searchStore";
-import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   const setCurrentPage = usePagesStore((state) => state.setCurrentPage);
@@ -11,10 +12,17 @@ const Home: NextPage = () => {
   useEffect(() => setCurrentPage("search"), []);
 
   const setPopularCourses = useSearchStore((state) => state.setPopularCourses);
+  const setMyCourses = useSearchStore((state) => state.setMyCourses);
 
   const mainPageQuery = api.course.mainPage.useQuery();
   if (mainPageQuery.data) {
-    setPopularCourses(mainPageQuery.data);
+    const { popularCourses, myCourses } = mainPageQuery.data;
+
+    setPopularCourses(popularCourses);
+
+    if (myCourses) {
+      setMyCourses(myCourses);
+    }
   }
 
   return <CourseInfo />;
