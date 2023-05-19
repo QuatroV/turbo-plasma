@@ -47,6 +47,8 @@ interface courseState {
 
   isOwner: boolean;
   setIsOwner(isOwner: boolean): void;
+  isModerator: boolean;
+  setIsModerator(isModerator: boolean): void;
 
   editMode: boolean;
   setEditMode(editMode: boolean): void;
@@ -83,6 +85,9 @@ const useCourseStore = create<courseState>()(
 
     isOwner: false,
     setIsOwner: (isOwner) => set({ isOwner }),
+
+    isModerator: false,
+    setIsModerator: (isModerator) => set({ isModerator }),
 
     editMode: false,
     setEditMode: (editMode) => set({ editMode }),

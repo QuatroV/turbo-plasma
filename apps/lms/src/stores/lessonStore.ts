@@ -10,6 +10,7 @@ export type LessonInfo = Prisma.LessonGetPayload<{
     meta: true;
     tasks: {
       select: {
+        id: true;
         name: true;
         content: true;
         expectedResult: true;

@@ -23,6 +23,7 @@ const CourseInfo = (): JSX.Element | null => {
   const setTopics = useTopicStore((state) => state.setTopics);
   const setUsers = useCourseStore((state) => state.setUsers);
   const setOwner = useCourseStore((state) => state.setCurrentCourseOwner);
+  const setIsModerator = useCourseStore((state) => state.setIsModerator);
 
   const { data: session } = useSession();
 
@@ -53,7 +54,9 @@ const CourseInfo = (): JSX.Element | null => {
         setEditedCurrentCourse(rest);
       }
       setJoined(!!courseUser);
+
       setIsOwner(courseUser?.courseRole === "OWNER");
+      setIsModerator(courseUser?.courseRole === "MODERATOR");
       setUsers(
         CourseUsers.map((courseUser) => ({
           user: courseUser.user,

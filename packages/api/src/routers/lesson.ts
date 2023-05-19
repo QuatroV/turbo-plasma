@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { type SolutionForClient } from "./task";
 
 export const lessonRouter = createTRPCRouter({
   show: protectedProcedure
@@ -17,6 +18,7 @@ export const lessonRouter = createTRPCRouter({
           topicId: true,
           tasks: {
             select: {
+              id: true,
               name: true,
               content: true,
               expectedResult: true,
@@ -48,6 +50,7 @@ export const lessonRouter = createTRPCRouter({
               meta: true,
               tasks: {
                 select: {
+                  id: true,
                   name: true,
                   content: true,
                   expectedResult: true,
@@ -72,7 +75,28 @@ export const lessonRouter = createTRPCRouter({
         },
         where: { id: lesson?.courseId },
       });
-      return { lesson: lesson, course: lessonCourse };
+
+      const solutionsFromDb = await ctx.prisma.solution.findMany({
+        where: {
+          taskId: { in: lesson?.tasks.map((task) => task.id) },
+          solverId: ctx.session.user.id,
+        },
+        include: {
+          solver: true,
+        },
+      });
+
+      // Cannot send buffers, so translate them to strings
+      const solutions: SolutionForClient[] = [];
+
+      solutionsFromDb.forEach((el, id) => {
+        solutions[id] = {
+          ...el,
+          content: el.content ? el.content.toString() : "",
+        };
+      });
+
+      return { lesson: lesson, course: lessonCourse, solutions };
     }),
 
   editContent: protectedProcedure

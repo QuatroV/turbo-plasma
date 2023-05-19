@@ -6,7 +6,6 @@ import { saveToClipboard } from "~/utils/clipboard";
 export const transform: Transform = (domNode) => {
   if (domNode.name === "h1") {
     const domData = domNode.children[0].data;
-    console.log({ domNode, domData });
     return (
       <h1 id={domNode.attribs.id} className="my-2 text-4xl font-bold">
         {domData}

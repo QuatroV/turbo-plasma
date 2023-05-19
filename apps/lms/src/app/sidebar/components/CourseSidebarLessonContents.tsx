@@ -1,8 +1,9 @@
-import useLessonStore from "~/stores/lessonStore";
-import clsxm from "~/utils/clsxm";
-import { JsonElement, parseHtmlToJson } from "~/utils/HTMLtoJSON";
-import { RxBookmarkFilled, RxBookmark } from "react-icons/rx";
 import { AiFillStar } from "react-icons/ai";
+import { RxBookmark, RxBookmarkFilled } from "react-icons/rx";
+
+import { parseHtmlToJson, type JsonElement } from "~/utils/HTMLtoJSON";
+import clsxm from "~/utils/clsxm";
+import useLessonStore from "~/stores/lessonStore";
 
 const isHeaderTag = (jsonElement: JsonElement) => {
   const tagLowered = jsonElement.tag.toLowerCase();
@@ -24,10 +25,9 @@ const getStylesByHeaderType = (jsonElement: JsonElement) => {
 };
 
 const renderHeadersTree = (
-  jsonElement: JsonElement
+  jsonElement: JsonElement,
 ): JSX.Element | undefined => {
   if (isHeaderTag(jsonElement)) {
-    console.log({ jsonElement });
     const handleHeaderClick = () => {
       document
         .querySelector(`#${jsonElement.id}`)
@@ -39,7 +39,7 @@ const renderHeadersTree = (
         onClick={handleHeaderClick}
         className={clsxm(
           getStylesByHeaderType(jsonElement),
-          "relative flex cursor-pointer items-center gap-1 p-1 text-sm hover:bg-gray-300 active:shadow-inner"
+          "relative flex cursor-pointer items-center gap-1 p-1 text-sm hover:bg-gray-300 active:shadow-inner",
         )}
       >
         {jsonElement.tag.toLowerCase() === "h1" ? <AiFillStar /> : undefined}

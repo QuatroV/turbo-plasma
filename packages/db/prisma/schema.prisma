@@ -57,6 +57,7 @@ model User {
   accounts Account[]
   sessions Session[]
   Comment  Comment[]
+  Solution Solution[]
 
   @@unique([email, password])
 }
@@ -76,7 +77,7 @@ model Course {
   private    Boolean?     @default(false)
   lessons    Lesson[]
   CourseUser CourseUser[]
-  topics      Topic[]
+  topics     Topic[]
 }
 
 model Lesson {
@@ -89,7 +90,7 @@ model Lesson {
   meta     Json?
   Comment  Comment[]
 
-  Topic   Topic? @relation(fields: [topicId], references: [id])
+  Topic   Topic?  @relation(fields: [topicId], references: [id])
   topicId String?
 }
 
@@ -98,7 +99,6 @@ model Task {
   name           String?
   content        String
   solutions      Solution[]
-  tests          Test[]
   Lesson         Lesson?    @relation(fields: [lessonId], references: [id])
   lessonId       String?
   expectedResult String
@@ -111,31 +111,17 @@ model CourseUser {
   courseRole CourseRole @default(LISTENER)
   userId     String
   courseId   String
-  solutions  Solution[]
 }
 
 model Solution {
-  id           String      @id @unique @default(cuid())
-  solver       CourseUser? @relation(fields: [courseUserId], references: [id])
-  content      Bytes?
-  mark         Mark?       @relation(fields: [markId], references: [id])
-  Task         Task?       @relation(fields: [taskId], references: [id])
-  taskId       String?
-  courseUserId String?
-  markId       String?
-}
-
-model Test {
-  id     String  @id @unique @default(cuid())
-  result String
-  Task   Task?   @relation(fields: [taskId], references: [id])
-  taskId String?
-}
-
-model Mark {
-  id       String     @id @unique @default(cuid())
-  value    Int
-  Solution Solution[]
+  id       String  @id @unique @default(cuid())
+  solver   User?   @relation(fields: [solverId], references: [id])
+  content  Bytes?
+  mark     Int?     
+  Task     Task?   @relation(fields: [taskId], references: [id])
+  taskId   String?
+  solverId String?
+  createdAt DateTime @default(now())
 }
 
 model Comment {
