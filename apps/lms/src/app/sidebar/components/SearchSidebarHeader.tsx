@@ -1,14 +1,16 @@
 import {
-  ChangeEventHandler,
-  MouseEventHandler,
   useEffect,
   useState,
+  type ChangeEventHandler,
+  type MouseEventHandler,
 } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineClear } from "react-icons/md";
+
+import { api } from "~/utils/api";
+import clsxm from "~/utils/clsxm";
 import Input from "~/components/Input";
 import useSearchStore from "~/stores/searchStore";
-import { api } from "~/utils/api";
 
 const SearchSidebarHeader = () => {
   const searchPhrase = useSearchStore((state) => state.searchQuery);
@@ -20,7 +22,7 @@ const SearchSidebarHeader = () => {
 
   const searchQuery = api.course.search.useQuery(
     { phrase: searchPhrase },
-    { enabled: searchPhrase.length > 0 }
+    { enabled: searchPhrase.length > 0 },
   );
 
   const setSearchResult = useSearchStore((state) => state.setSearchResult);
@@ -39,6 +41,8 @@ const SearchSidebarHeader = () => {
     setSearchPhrase("");
   };
 
+  const [playInputAnimation, setPlayInputAnimation] = useState(false);
+
   return (
     <div className="flex flex-col items-start gap-1 bg-gray-300 p-2">
       <label className="text-xs font-medium text-gray-600">
@@ -49,16 +53,22 @@ const SearchSidebarHeader = () => {
           <MdOutlineClear
             size="16"
             onClick={handleClear}
-            className="absolute top-[6px] right-2 cursor-pointer"
+            className="absolute right-2 top-[6px] cursor-pointer"
           />
         ) : (
-          <AiOutlineSearch size="16" className="absolute top-[6px] right-2" />
+          <AiOutlineSearch size="16" className="absolute right-2 top-[6px]" />
         )}
 
         <Input
+          id="main-sidebar-search-input"
           value={searchPhrase}
           onChange={handleChange}
-          className="px-2 text-sm"
+          onFocus={() => setPlayInputAnimation(true)}
+          onAnimationEnd={() => setPlayInputAnimation(false)}
+          className={clsxm(
+            " z-20 px-2 text-sm",
+            playInputAnimation && " animate-squeeze",
+          )}
           placeholder="Name of the course..."
         />
       </div>

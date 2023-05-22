@@ -8,6 +8,7 @@ import LessonTasks from "~/app/lessonTasks/components/LessonTasks";
 import useCourseStore from "~/stores/courseStore";
 import useLessonStore from "~/stores/lessonStore";
 import usePagesStore from "~/stores/pageStore";
+import useSolutionStore from "~/stores/solutionStore";
 
 type Props = {
   lessonId: string;
@@ -19,6 +20,7 @@ const Lesson: NextPage<Props> = ({ lessonId }) => {
   const setCurrentPage = usePagesStore((state) => state.setCurrentPage);
   const setCurrentCourse = useCourseStore((state) => state.setCurrentCourse);
   const setUsers = useCourseStore((state) => state.setUsers);
+  const setSolutions = useSolutionStore((state) => state.setSolutions);
 
   useEffect(() => setCurrentPage("course"));
 
@@ -26,7 +28,7 @@ const Lesson: NextPage<Props> = ({ lessonId }) => {
 
   useEffect(() => {
     if (lessonQuery.data) {
-      const { lesson, course } = lessonQuery.data;
+      const { lesson, course, solutions } = lessonQuery.data;
       if (course) {
         setUsers(
           course.CourseUser.map((courseUser) => ({
@@ -35,6 +37,7 @@ const Lesson: NextPage<Props> = ({ lessonId }) => {
           })),
         );
         setCurrentCourse(course);
+        setSolutions(solutions);
       }
 
       setLesson(lesson);

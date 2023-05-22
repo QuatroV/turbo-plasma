@@ -48,6 +48,7 @@ export const lessonRouter = createTRPCRouter({
               name: true,
               content: true,
               meta: true,
+              topicId: true,
               tasks: {
                 select: {
                   id: true,
@@ -76,27 +77,56 @@ export const lessonRouter = createTRPCRouter({
         where: { id: lesson?.courseId },
       });
 
-      const solutionsFromDb = await ctx.prisma.solution.findMany({
+      const courseUser = await ctx.prisma.courseUser.findFirst({
         where: {
-          taskId: { in: lesson?.tasks.map((task) => task.id) },
-          solverId: ctx.session.user.id,
-        },
-        include: {
-          solver: true,
+          id: ctx.session.user.id,
         },
       });
 
-      // Cannot send buffers, so translate them to strings
-      const solutions: SolutionForClient[] = [];
+      if (courseUser?.courseRole === "LISTENER") {
+        const solutionsFromDb = await ctx.prisma.solution.findMany({
+          where: {
+            taskId: { in: lesson?.tasks.map((task) => task.id) },
+            solverId: ctx.session.user.id,
+          },
+          include: {
+            solver: true,
+          },
+        });
 
-      solutionsFromDb.forEach((el, id) => {
-        solutions[id] = {
-          ...el,
-          content: el.content ? el.content.toString() : "",
-        };
-      });
+        // Cannot send buffers, so translate them to strings
+        const solutions: SolutionForClient[] = [];
 
-      return { lesson: lesson, course: lessonCourse, solutions };
+        solutionsFromDb.forEach((el, id) => {
+          solutions[id] = {
+            ...el,
+            content: el.content ? el.content.toString() : "",
+          };
+        });
+
+        return { lesson: lesson, course: lessonCourse, solutions };
+      } else {
+        const solutionsFromDb = await ctx.prisma.solution.findMany({
+          where: {
+            taskId: { in: lesson?.tasks.map((task) => task.id) },
+          },
+          include: {
+            solver: true,
+          },
+        });
+
+        // Cannot send buffers, so translate them to strings
+        const solutions: SolutionForClient[] = [];
+
+        solutionsFromDb.forEach((el, id) => {
+          solutions[id] = {
+            ...el,
+            content: el.content ? el.content.toString() : "",
+          };
+        });
+
+        return { lesson: lesson, course: lessonCourse, solutions };
+      }
     }),
 
   editContent: protectedProcedure
