@@ -6,8 +6,8 @@ type Props = {
 
 const AppBox = ({ appInfo }: Props) => {
   return (
-    <div className="bg-glass flex-1 cursor-pointer rounded-lg p-2 shadow transition-all">
-      <div className="mb-2 flex items-center gap-4">
+    <div className="bg-glass flex flex-1 cursor-pointer items-center rounded-xl p-3 shadow transition-all hover:-translate-y-1">
+      <div className=" flex items-center gap-4">
         <div className="w-14 rounded-full bg-white p-2">{appInfo.icon}</div>
         <div className="text-gray-600">
           <div className=" text-lg font-black text-gray-700">
