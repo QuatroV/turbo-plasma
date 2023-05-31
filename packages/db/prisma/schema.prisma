@@ -102,6 +102,7 @@ model Task {
   Lesson         Lesson?    @relation(fields: [lessonId], references: [id])
   lessonId       String?
   expectedResult String
+  Test           Test[]
 }
 
 model CourseUser {
@@ -114,14 +115,22 @@ model CourseUser {
 }
 
 model Solution {
-  id       String  @id @unique @default(cuid())
-  solver   User?   @relation(fields: [solverId], references: [id])
-  content  Bytes?
-  mark     Int?     
-  Task     Task?   @relation(fields: [taskId], references: [id])
-  taskId   String?
-  solverId String?
+  id        String   @id @unique @default(cuid())
+  solver    User?    @relation(fields: [solverId], references: [id])
+  content   Bytes?
+  mark      Int?
+  Task      Task?    @relation(fields: [taskId], references: [id])
+  taskId    String?
+  solverId  String?
   createdAt DateTime @default(now())
+}
+
+model Test {
+  id     String  @id @unique @default(cuid())
+  input  String?
+  output String
+  Task   Task    @relation(fields: [taskId], references: [id])
+  taskId String
 }
 
 model Comment {

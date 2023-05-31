@@ -1,14 +1,15 @@
 import { signOut, useSession } from "next-auth/react";
 import { FiUser } from "react-icons/fi";
-import Settings from "~/app/settings/components/Settings";
+
 import Button from "~/components/Button";
+import Settings from "~/app/settings/components/Settings";
 import useAuthStore from "~/stores/authStore";
 
 const ProfileForm = () => {
   const { data: session } = useSession();
 
   const setIsProfileModalOpen = useAuthStore(
-    (state) => state.setIsProfileModalOpen
+    (state) => state.setIsProfileModalOpen,
   );
 
   const handleLogOut = () => {
@@ -25,10 +26,6 @@ const ProfileForm = () => {
             <div className="text-lg font-bold">{session?.user.name}</div>
             <div className="text-xs text-gray-500">{session?.user.email}</div>
           </div>
-        </div>
-
-        <div className="flex flex-row gap-4">
-          <div className={`text-xl transition-all`}>Info</div>
         </div>
 
         <div className="flex flex-col gap-4">

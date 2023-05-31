@@ -1,0 +1,181 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Account {
+  id String [pk]
+  userId String [not null]
+  type String [not null]
+  provider String [not null]
+  providerAccountId String [not null]
+  refresh_token String
+  access_token String
+  expires_at Int
+  token_type String
+  scope String
+  id_token String
+  session_state String
+  user User [not null]
+
+  indexes {
+    (provider, providerAccountId) [unique]
+  }
+}
+
+Table Session {
+  id String [pk]
+  sessionToken String [unique, not null]
+  userId String [not null]
+  expires DateTime [not null]
+  user User [not null]
+}
+
+Table User {
+  id String [pk]
+  name String
+  email String [unique]
+  emailVerified DateTime
+  password String
+  image String
+  surname String [not null]
+  isBanned Boolean [not null]
+  role Role [not null, default: 'STUDENT']
+  CourseUser CourseUser [not null]
+  accounts Account [not null]
+  sessions Session [not null]
+  Comment Comment [not null]
+  Solution Solution [not null]
+
+  indexes {
+    (email, password) [unique]
+  }
+}
+
+Table VerificationToken {
+  identifier String [not null]
+  token String [unique, not null]
+  expires DateTime [not null]
+
+  indexes {
+    (identifier, token) [unique]
+  }
+}
+
+Table Course {
+  id String [pk]
+  name String [not null, default: '']
+  shortInfo String [not null, default: '']
+  private Boolean [default: false]
+  lessons Lesson [not null]
+  CourseUser CourseUser [not null]
+  topics Topic [not null]
+}
+
+Table Lesson {
+  id String [pk]
+  name String [not null, default: '']
+  tasks Task [not null]
+  content String
+  Course Course
+  courseId String
+  meta Json
+  Comment Comment [not null]
+  Topic Topic
+  topicId String
+}
+
+Table Task {
+  id String [pk]
+  name String
+  content String [not null]
+  solutions Solution [not null]
+  Lesson Lesson
+  lessonId String
+  expectedResult String [not null]
+  Test Test [not null]
+}
+
+Table CourseUser {
+  id String [pk]
+  user User [not null]
+  course Course [not null]
+  courseRole CourseRole [not null, default: 'LISTENER']
+  userId String [not null]
+  courseId String [not null]
+}
+
+Table Solution {
+  id String [pk]
+  solver User
+  content Bytes
+  mark Int
+  Task Task
+  taskId String
+  solverId String
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table Test {
+  id String [pk]
+  input String
+  output String [not null]
+  Task Task [not null]
+  taskId String [not null]
+}
+
+Table Comment {
+  id String [pk]
+  content String [not null]
+  author User [not null]
+  authorId String [not null]
+  lesson Lesson [not null]
+  lessonId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table Topic {
+  id String [pk]
+  name String [not null]
+  course Course [not null]
+  courseId String [not null]
+  Lesson Lesson [not null]
+  color String [not null]
+}
+
+Enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+Enum CourseRole {
+  OWNER
+  MODERATOR
+  LISTENER
+}
+
+Ref: Account.userId > User.id [delete: Cascade]
+
+Ref: Session.userId > User.id [delete: Cascade]
+
+Ref: Lesson.courseId > Course.id
+
+Ref: Lesson.topicId > Topic.id
+
+Ref: Task.lessonId > Lesson.id
+
+Ref: CourseUser.userId > User.id
+
+Ref: CourseUser.courseId > Course.id
+
+Ref: Solution.solverId > User.id
+
+Ref: Solution.taskId > Task.id
+
+Ref: Test.taskId > Task.id
+
+Ref: Comment.authorId > User.id
+
+Ref: Comment.lessonId > Lesson.id
+
+Ref: Topic.courseId > Course.id
