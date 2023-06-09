@@ -174,11 +174,14 @@ export const lessonRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(z.object({ courseId: z.string(), lessonIds: z.array(z.string()) }))
     .mutation(async ({ input, ctx }) => {
+      console.log(input.lessonIds);
       await ctx.prisma.lesson.deleteMany({
         where: {
           id: { in: input.lessonIds },
         },
       });
+
+      console.log("THROUGH");
 
       const updatedCourse = await ctx.prisma.course.findFirst({
         where: {

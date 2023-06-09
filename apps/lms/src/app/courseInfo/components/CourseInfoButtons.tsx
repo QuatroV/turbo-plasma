@@ -72,7 +72,11 @@ const CourseInfoButtons = ({ isPrivate, courseId }: Props) => {
     setEditMode(false);
   };
 
-  const handleDeleteCourse = () => {};
+  const deleteCourseMutation = api.course.delete.useMutation();
+
+  const handleDeleteCourse = async () => {
+    await deleteCourseMutation.mutateAsync({ id: courseId });
+  };
 
   if (isOwner) {
     return editMode ? (

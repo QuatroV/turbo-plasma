@@ -1,5 +1,6 @@
 import { type GetServerSidePropsContext } from "next";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import bcrypt from "bcrypt";
 import {
   getServerSession,
   type DefaultSession,
@@ -7,7 +8,9 @@ import {
 } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import { prisma } from "@plasma/db";
+import { prisma, type Role } from "@plasma/db";
+
+import { comparePassword, encryptPassword } from "./utils";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -65,6 +68,15 @@ export const authOptions: NextAuthOptions = {
           type: "text",
           placeholder: "Your Name",
         },
+        surname: {
+          label: "Surname",
+          type: "role",
+          placeholder: "Your Surname",
+        },
+        role: {
+          label: "Role",
+          placeholder: "Your Role",
+        },
         isNewUser: {
           label: "New User",
           type: "checkbox",
@@ -76,15 +88,28 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        const encrypedPassword = await encryptPassword(credentials.password);
+
         // Registration flow
         if (credentials.isNewUser) {
+          const user = await prisma.user.findFirst({
+            where: {
+              email: credentials.email,
+            },
+          });
+
+          if (user) {
+            return null;
+          }
+
           const newUser = await prisma.user.create({
             data: {
               name: credentials.name,
-              surname: "",
+              surname: credentials.surname,
               isBanned: false,
+              role: credentials.role as Role,
               email: credentials.email,
-              password: credentials.password,
+              password: encrypedPassword,
             },
           });
 
@@ -95,11 +120,19 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.user.findFirst({
           where: {
             email: credentials.email,
-            password: credentials.password,
           },
         });
 
-        if (!user) {
+        if (!user || !user.password) {
+          return null;
+        }
+
+        const comparePasswordCondition = await comparePassword(
+          credentials.password,
+          user.password,
+        );
+
+        if (!comparePasswordCondition) {
           return null;
         }
 

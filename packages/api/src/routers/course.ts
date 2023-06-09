@@ -280,6 +280,25 @@ export const courseRouter = createTRPCRouter({
       return updatedCourse;
     }),
 
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.courseUser.deleteMany({
+        where: {
+          courseId: input.id,
+        },
+      });
+
+      await ctx.prisma.course.delete({
+        where: {
+          id: input.id,
+        },
+        include: {
+          lessons: true,
+        },
+      });
+    }),
+
   myCourses: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
 

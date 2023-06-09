@@ -85,7 +85,7 @@ model Lesson {
   name     String    @default("")
   tasks    Task[]
   content  String?
-  Course   Course?   @relation(fields: [courseId], references: [id])
+  Course   Course?   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId String?
   meta     Json?
   Comment  Comment[]
